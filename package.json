@@ -1,0 +1,16 @@
+{
+  "name":        "hubot-pyscripts",
+  "version":     "0.0.1",
+  "author":      "scopely",
+  "keywords":    ["hubot", "plugin", "scripts", "campfire", "bot", "robot"],
+  "description": "Allows you to opt in to a variety of scripts",
+  "main": "./index",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/scopely/hubot-scopely-scripts.git"
+  },
+  "enabled_scripts" : [
+  "lastfm.py",
+  "right_hubot.py"
+  ]
+}
