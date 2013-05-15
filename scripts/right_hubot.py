@@ -19,6 +19,6 @@ from scripts.hubot_script import *
 
 class RightHubot(HubotScript):
     
-    @hear('test')
+    @hear('right, hubot')
     def right(self, message, matches):
-        return 'TESTTESTTEST.'
+        return 'Yep.'
