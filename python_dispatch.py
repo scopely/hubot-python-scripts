@@ -69,20 +69,23 @@ class HubotDispatch(object):
             modf = imp.find_module(modname)
             hubot_script._hear_regexes.clear()
             hubot_script._resp_regexes.clear()
-            mod = imp.load_module(modname, *modf)
-            regexes = {}
-            regexes.update(hubot_script._hear_regexes)
-            regexes.update(hubot_script._resp_regexes)
-            self.hear_regexes.update(hubot_script._hear_regexes)
-            self.resp_regexes.update(hubot_script._resp_regexes)
+            try:
+                mod = imp.load_module(modname, *modf)
+                regexes = {}
+                regexes.update(hubot_script._hear_regexes)
+                regexes.update(hubot_script._resp_regexes)
+                self.hear_regexes.update(hubot_script._hear_regexes)
+                self.resp_regexes.update(hubot_script._resp_regexes)
 
-            for name, member in inspect.getmembers(mod):
-                if inspect.isclass(member):
-                    if issubclass(member, hubot_script.HubotScript) and member != hubot_script.HubotScript:
-                        instance = member()
-                        for key in regexes:
-                            self.instance_map[regexes[key]] = instance
-                        self.scripts += [instance]
+                for name, member in inspect.getmembers(mod):
+                    if inspect.isclass(member):
+                        if issubclass(member, hubot_script.HubotScript) and member != hubot_script.HubotScript:
+                            instance = member()
+                            for key in regexes:
+                                self.instance_map[regexes[key]] = instance
+                            self.scripts += [instance]
+            except Exception as e:
+                pass
 
 if __name__ == '__main__':
     dispatch = HubotDispatch()
