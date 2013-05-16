@@ -46,7 +46,7 @@ class HubotDispatch(object):
 
     def dispatch_generic(self, message, regexes):
         for regex in regexes:
-            search = re.search(regex, message['message'])
+            search = re.search(regex, message['message'], re.IGNORECASE)
             if search:
                 handler = regexes[regex]
                 response = message
