@@ -15,7 +15,7 @@ AUTH = HTTPBasicAuth(USERNAME, PASSWORD)
 
 from scripts.hubot_script import *
 
-class RightHubot(HubotScript):
+class TeamCity(HubotScript):
 
     @respond('(?:teamcity )?list projects')
     def hubot_list_projects(self, message, matches):
@@ -27,6 +27,7 @@ class RightHubot(HubotScript):
 
     @respond('(?:teamcity )?(?:build|deploy) (.*)')
     def hubot_build(self, message, matches):
+        return str(matches)
         return build(name=matches[1])
 
     def build(self, name=''):
