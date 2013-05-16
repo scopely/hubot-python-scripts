@@ -60,7 +60,7 @@ class HubotDispatch(object):
         pass
 
     def load_scripts(self):
-        prefix = '{root}{sep}'.format(root=os.getcwd(), sep=os.sep)
+        prefix = '{root}{sep}'.format(root=os.path.dirname(os.path.realpath(__file__)), sep=os.sep)
         sys.path.append('{0}scripts'.format(prefix))
         package = json.load(open('{0}package.json'.format(prefix)))
         self.scripts = []
