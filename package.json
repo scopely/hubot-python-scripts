@@ -1,7 +1,7 @@
 {
   "name":        "hubot-python-scripts",
-  "version":     "0.0.1",
-  "author":      "scopely",
+  "version":     "0.0.2",
+  "author":      "maxgoedjen",
   "keywords":    ["hubot", "python", "scripts", "campfire", "bot", "robot"],
   "description": "Write Hubot scripts in Python",
   "main": "./index",
