@@ -27,15 +27,15 @@ class TeamCity(HubotScript):
 
     @respond('(?:teamcity )?(?:build|deploy) (.*)')
     def hubot_build(self, message, matches):
-        return build(name=matches[1])
+        return self.build(name=matches[1])
 
     def build(self, name=''):
-        closest = get_closest_buildtype(name)
+        closest = self.get_closest_buildtype(name)
         if not closest:
             return 'No projects found for {name}'.format(name=name)
         closest_name, closest_id = closest
         url = '/httpAuth/action.html?add2Queue={buildtype}'.format(buildtype=closest_id)
-        r = request(url)
+        r = self.request(url)
         if r.status_code == 200:
             return 'Building {name}'.format(name=closest_name)
         else:
@@ -45,14 +45,14 @@ class TeamCity(HubotScript):
         all_buildtypes = {}
         for project in PROJECTS:
             url = '/httpAuth/app/rest/projects/name:{project}/buildTypes'.format(project=project)
-            r = request(url)
+            r = self.request(url)
             data = json.loads(r.text)
             for x in data['buildType']:
                 all_buildtypes[x['name']] = x['id']
         return all_buildtypes
 
     def get_closest_buildtype(self, name=''):
-        buildtypes = get_buildtypes()
+        buildtypes = self.get_buildtypes()
         matches = difflib.get_close_matches(name, buildtypes.keys(), 1, .3)
         if matches:
             return (matches[0], buildtypes[matches[0]])
