@@ -21,7 +21,7 @@ class TeamCity(HubotScript):
     def hubot_list_projects(self, message, matches):
         projects = ''
         for x in self.get_buildtypes():
-            projects += '{0}\n'.format(x[0])
+            projects += '{0}\n'.format(x)
         return projects
     
 
