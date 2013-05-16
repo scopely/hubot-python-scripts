@@ -27,7 +27,6 @@ class TeamCity(HubotScript):
 
     @respond('(?:teamcity )?(?:build|deploy) (.*)')
     def hubot_build(self, message, matches):
-        return str(matches)
         return build(name=matches[1])
 
     def build(self, name=''):
