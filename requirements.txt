@@ -1,0 +1,2 @@
+# lastfm.py
+lastfmapi==0.1
