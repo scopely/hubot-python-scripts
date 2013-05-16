@@ -4,6 +4,7 @@ from os import environ
 
 import requests
 from requests.auth import HTTPBasicAuth
+from scripts.hubot_script import *
 
 HOST = environ.get('HUBOT_TEAMCITY_HOSTNAME', '')
 USERNAME = environ.get('HUBOT_TEAMCITY_USERNAME', '')
@@ -13,7 +14,6 @@ PROJECTS = [x.strip() for x in environ.get('HUBOT_TEAMCITY_PROJECTS', '').split(
 HEADERS = {'Accept': 'application/json'}
 AUTH = HTTPBasicAuth(USERNAME, PASSWORD)
 
-from scripts.hubot_script import *
 
 class TeamCity(HubotScript):
 
@@ -59,4 +59,4 @@ class TeamCity(HubotScript):
             return (matches[0], buildtypes[matches[0]])
 
     def request(self, url):
-    return requests.get('http://{host}{url}'.format(host=HOST, url=url), headers=HEADERS, auth=AUTH)
+        return requests.get('http://{host}{url}'.format(host=HOST, url=url), headers=HEADERS, auth=AUTH)
