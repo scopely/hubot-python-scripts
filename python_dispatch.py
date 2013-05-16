@@ -85,7 +85,7 @@ class HubotDispatch(object):
                                 self.instance_map[regexes[key]] = instance
                             self.scripts += [instance]
             except Exception as e:
-                pass
+                sys.stderr.write('Error importing {mod}:{e}\n'.format(mod=modname, e=str(e)))
 
 if __name__ == '__main__':
     dispatch = HubotDispatch()
