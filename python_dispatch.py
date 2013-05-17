@@ -51,9 +51,13 @@ class HubotDispatch(object):
                 handler = regexes[regex]
                 response = message
                 instance = self.instance_map[handler]
-                response_text = handler(instance, message, search.groups())
-                if response_text:
-                    response['message'] = response_text
+                try:
+                    response_text = handler(instance, message, search.groups())
+                    if response_text:
+                        response['message'] = response_text
+                        self.send(response)
+                except Exception as e:
+                    response['message'] = 'Python exception: {0}'.format(str(e))
                     self.send(response)
 
     def no_handler(self, message):
