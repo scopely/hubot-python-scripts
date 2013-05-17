@@ -26,7 +26,7 @@ class TeamCity(HubotScript):
     
     @respond('(?:teamcity )?(?:build|deploy) ([^ ]*)(?: (.*))?')
     def hubot_build(self, message, matches):
-        return self.build(name=matches[0], build=matches[1])
+        return self.build(name=matches[0], branch=matches[1])
 
     def build(self, name='', branch=''):
         closest = self.get_closest_buildtype(name)
