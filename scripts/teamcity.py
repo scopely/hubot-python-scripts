@@ -24,17 +24,19 @@ class TeamCity(HubotScript):
             projects += '{0}\n'.format(x)
         return projects
     
-
-    @respond('(?:teamcity )?(?:build|deploy) (.*)')
+    @respond('(?:teamcity )?(?:build|deploy) ([^ ]*)(?: (.*))?')
     def hubot_build(self, message, matches):
-        return self.build(name=matches[0])
+        return self.build(name=matches[0], matches[1])
 
-    def build(self, name=''):
+    def build(self, name='', branch=''):
         closest = self.get_closest_buildtype(name)
         if not closest:
             return 'No projects found for {name}'.format(name=name)
         closest_name, closest_id = closest
-        url = '/httpAuth/action.html?add2Queue={buildtype}'.format(buildtype=closest_id)
+        branchstr = ''
+        if branch:
+            branchstr = '&branchName={branch}'.format(branch=branch)
+        url = '/httpAuth/action.html?add2Queue={buildtype}&moveToTop=true{branchstr}'.format(buildtype=closest_id)
         r = self.request(url)
         if r.status_code == 200:
             return 'Building {name}'.format(name=closest_name)
