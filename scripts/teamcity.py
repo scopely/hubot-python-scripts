@@ -36,7 +36,7 @@ class TeamCity(HubotScript):
         branchstr = ''
         if branch:
             branchstr = '&branchName={branch}'.format(branch=branch)
-        url = '/httpAuth/action.html?add2Queue={buildtype}&moveToTop=true{branchstr}'.format(buildtype=closest_id)
+        url = '/httpAuth/action.html?add2Queue={buildtype}&moveToTop=true{branchstr}'.format(buildtype=closest_id, branchstr=branchstr)
         r = self.request(url)
         if r.status_code == 200:
             return 'Building {name}'.format(name=closest_name)
