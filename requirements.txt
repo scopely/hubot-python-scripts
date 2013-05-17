@@ -1,3 +1,5 @@
 requests==0.14.0
 # lastfm.py
 lastfmapi==0.1
+# jira.py
+jira-python==0.13

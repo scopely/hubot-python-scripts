@@ -12,6 +12,7 @@
   "enabled_scripts" : [
   "lastfm.py",
   "right_hubot.py",
-  "teamcity.py"
+  "teamcity.py",
+  "jira.py"
   ]
 }
