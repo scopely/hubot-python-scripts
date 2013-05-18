@@ -22,15 +22,15 @@ import lastfmapi
 class LastFM(HubotScript):
     
     def __init__(self):
-        self.api = lastfmapi.LastFmApi(os.environ.get('LASTFM_API_KEY'))
+        self.api = lastfmapi.LastFmApi(os.environ.get('HUBOT_LASTFM_API_KEY'))
         HubotScript.__init__(self)
 
     def recent_tracks(self):
-        recent = self.api.user_getRecentTracks(user=os.environ.get('LASTFM_USERNAME'))
+        recent = self.api.user_getRecentTracks(user=os.environ.get('HUBOT_LASTFM_USERNAME'))
         tracks = [Track(x) for x in recent['recenttracks']['track']]
         return tracks
 
-    @hear('(?:last )?([0-9]* )?(?:songs? )?played')
+    @hear('(?:last )?([0-9]* )?(?:song(?:s)? )?played')
     def recently_played(self, message, matches):
         last_x = ''
         played = [track for track in self.recent_tracks() if not track.playing]
@@ -44,7 +44,7 @@ class LastFM(HubotScript):
             last_x += '%s\n' % played[i]
         return last_x
 
-    @hear('(?:currently )?playing')
+    @hear('(currently playing|playing( right)? now)')
     def current(self, message, matches):
         current_track = None
         for track in self.recent_tracks():
