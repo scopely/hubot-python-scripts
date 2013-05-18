@@ -30,7 +30,9 @@ class JIRALookup(HubotScript):
     def lookup_jira(self, message, matches):
         issue_id = matches[0]
         jira = JIRA(options={'server': HOST}, basic_auth=(USERNAME, PASSWORD))
-        issue = jira.issue(issue_id)
-        if issue:
+        try:
+            issue = jira.issue(issue_id)
             url = '{base}/browse/{id}'.format(base=HOST, id=issue_id)
             return '{id}: {title} ({url})\n{desc}'.format(id=issue_id.upper(), title=issue.fields.summary, desc=issue.fields.description,url=url)
+        except Exception as e:
+            pass
