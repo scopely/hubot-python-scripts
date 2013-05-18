@@ -27,8 +27,10 @@ class LastFM(HubotScript):
 
     def recent_tracks(self):
         recent = self.api.user_getRecentTracks(user=os.environ.get('HUBOT_LASTFM_USERNAME'))
-        tracks = [Track(x) for x in recent['recenttracks']['track']]
-        return tracks
+        if 'track' in recent['recenttracks']:
+            tracks = [Track(x) for x in recent['recenttracks']['track']]
+            return tracks
+        return []
 
     @hear('(?:last )?([0-9]* )?(?:song(?:s)? )?played')
     def recently_played(self, message, matches):
