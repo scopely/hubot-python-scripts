@@ -26,7 +26,7 @@ PASSWORD = environ.get('HUBOT_JIRA_PASSWORD', '')
 
 class JIRALookup(HubotScript):
     
-    @hear('([a-z]{2,100}-[0-9]*)')
+    @hear('([a-z]{2,100}-[0-9]+)')
     def lookup_jira(self, message, matches):
         issue_id = matches[0]
         jira = JIRA(options={'server': HOST}, basic_auth=(USERNAME, PASSWORD))
