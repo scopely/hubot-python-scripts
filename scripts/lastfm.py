@@ -32,7 +32,7 @@ class LastFM(HubotScript):
             return tracks
         return []
 
-    @hear('(?:last )?([0-9]* )?(?:song(?:s)? )?played')
+    @hear('(?:last )?([0-9]* )?(?:song(?:s)? )played')
     def recently_played(self, message, matches):
         last_x = ''
         played = [track for track in self.recent_tracks() if not track.playing]
