@@ -33,6 +33,9 @@ class JIRALookup(HubotScript):
         try:
             issue = jira.issue(issue_id)
             url = '{base}/browse/{id}'.format(base=HOST, id=issue_id)
-            return '{id}: {title} ({url})\n{desc}'.format(id=issue_id.upper(), title=issue.fields.summary, desc=issue.fields.description,url=url)
+            desc = ''
+            if issue.fields.description:
+                desc = issue.fields.description
+            return '{id}: {title} ({url})\n{desc}'.format(id=issue_id.upper(), title=issue.fields.summary, desc=desc,url=url)
         except Exception as e:
             pass
