@@ -46,7 +46,7 @@ class LastFM(HubotScript):
             last_x += '%s\n' % played[i]
         return last_x
 
-    @hear('(currently playing|playing( right)? now)')
+    @hear('(currently playing|playing( right)? now|now playing|song\?)')
     def current(self, message, matches):
         current_track = None
         for track in self.recent_tracks():
