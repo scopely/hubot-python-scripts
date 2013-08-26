@@ -36,6 +36,6 @@ class JIRALookup(HubotScript):
             desc = ''
             if issue.fields.description:
                 desc = issue.fields.description
-            return '{id} ({status}): {title} ({url})\n{desc}'.format(id=issue_id.upper(), status=issue.fields.status.name, title=issue.fields.summary, desc=desc,url=url)
+            return '{id}: {status} ({tags})\n{title} ({url})\n{desc}'.format(id=issue_id.upper(), status=issue.fields.status.name, title=issue.fields.summary, desc=desc,url=url, tags=', '.join(issue.fields.labels))
         except Exception as e:
             pass
