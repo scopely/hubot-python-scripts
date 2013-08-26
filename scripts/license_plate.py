@@ -33,11 +33,11 @@ class LicensePlate(HubotScript):
 
     @hear('plate #? ?([a-z0-9]+)')
     def lookup_plate(self, message, matches):
-        lookup_plate = matches[0].replace(' ', '')
+        lookup_plate = matches[0].replace(' ', '').lower()
         csvrows = self.get_csv_rows(URL)
         mapping=self.get_mapping(csvrows[0])
         for row in csvrows:
-            plate = row[mapping[PLATE]].replace(' ', '').replace('#', '')
+            plate = row[mapping[PLATE]].replace(' ', '').replace('#', '').lower()
             if plate == lookup_plate:
                 make = row[mapping[MAKE]]
                 model = row[mapping[MODEL]]
