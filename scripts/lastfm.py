@@ -52,7 +52,7 @@ class LastFM(HubotScript):
         for track in self.recent_tracks():
             if track.playing:
                 return '%s' % track
-        return self.recently_played(None, [])
+        return '%s' % self.recent_tracks()[0]
         
 class Track:
     def __init__(self, props):
