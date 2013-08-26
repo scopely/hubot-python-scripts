@@ -37,7 +37,7 @@ class LastFM(HubotScript):
         last_x = ''
         played = [track for track in self.recent_tracks() if not track.playing]
         lim = 1
-        if matches[0]:
+        if len(matches) > 0 and matches[0]:
             lim = min(int(matches[0]), len(played))
         else:
             lim = min(1, len(played))
@@ -52,7 +52,7 @@ class LastFM(HubotScript):
         for track in self.recent_tracks():
             if track.playing:
                 return '%s' % track
-        return 'No track currently playing'
+        return self.recently_played(None, [])
         
 class Track:
     def __init__(self, props):
