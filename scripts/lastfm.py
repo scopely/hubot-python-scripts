@@ -34,18 +34,21 @@ class LastFM(HubotScript):
 
     @hear('(?:last )?([0-9]* )?(?:song(?:s)? )played')
     def recently_played(self, message, matches):
-        last_x = ''
-        played = [track for track in self.recent_tracks() if not track.playing]
-        lim = 1
-        if len(matches) > 0 and matches[0]:
-            lim = min(int(matches[0]), len(played))
-        else:
-            lim = min(1, len(played))
+        try:
+            last_x = ''
+            played = [track for track in self.recent_tracks() if not track.playing]
+            lim = 1
+            if len(matches) > 0 and matches[0]:
+                lim = min(int(matches[0]), len(played))
+            else:
+                lim = min(1, len(played))
+                
+            for i in range(0, lim):
+                last_x += '%s\n' % played[i]
+            return last_x
+        except Exception as e:
+            pass
             
-        for i in range(0, lim):
-            last_x += '%s\n' % played[i]
-        return last_x
-
     @hear('(currently playing|playing( right)? now|now playing|song\?)')
     def current(self, message, matches):
         current_track = None
