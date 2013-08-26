@@ -45,6 +45,7 @@ class LicensePlate(HubotScript):
                 name = row[mapping[NAME]].title()
                 return 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
                     plate=plate, color=color, make=make, model=model, name=name)
+        return "I don't have any record of plate {plate}".format(plate=lookup_plate)
 
     def get_csv_rows(self, url):
         r = requests.get(url)
