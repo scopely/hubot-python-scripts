@@ -13,6 +13,7 @@
   "lastfm.py",
   "right_hubot.py",
   "teamcity.py",
-  "jira_lookup.py"
+  "jira_lookup.py",
+  "license_plate.py"
   ]
 }
