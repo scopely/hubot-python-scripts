@@ -36,15 +36,21 @@ class LicensePlate(HubotScript):
         lookup_plate = matches[0].replace(' ', '').lower()
         csvrows = self.get_csv_rows(URL)
         mapping=self.get_mapping(csvrows[0])
+        partials = []
         for row in csvrows:
             plate = row[mapping[PLATE]].replace(' ', '').replace('#', '').lower()
+            description = 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
+                    plate=plate.upper(), color=color, make=make, model=model, name=name)
             if plate == lookup_plate:
                 make = row[mapping[MAKE]]
                 model = row[mapping[MODEL]]
                 color = row[mapping[COLOR]]
                 name = row[mapping[NAME]].title()
-                return 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
-                    plate=plate.upper(), color=color, make=make, model=model, name=name)
+                return description
+            if lookup_plate in plate and len(lookup_plate) > 2:
+                partials += [description]
+        if partials:
+            return 'No exact matches, the following plates partially matched:\n{0}'.format('\n'.join(partials))
         return "I don't know who the car with plate {0} belongs to".format(lookup_plate)
 
     def get_csv_rows(self, url):
