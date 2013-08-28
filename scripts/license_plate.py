@@ -54,12 +54,12 @@ class LicensePlate(HubotScript):
             return 'No exact matches, the following plates partially matched:\n{0}'.format('\n'.join(partials))
         return "I don't know who the car with plate {0} belongs to".format(lookup_plate)
 
-    @hear('drives (?:a|the) ([a-z]+ )?([a-z]+) ([a-z]+)')
+    @hear('drives (?:a|the) ([a-z]+ )?([a-z]+) (.+)')
     def lookup_car(self, message, matches):
         lookup_color, lookup_make, lookup_model = matches
-        lookup_make, lookup_model = lookup_make.lower(), lookup_model.lower()
+        lookup_make, lookup_model = lookup_make.lower(), lookup_model.lower().strip()
         if lookup_color:
-            lookup_color = lookup_color.lower()
+            lookup_color = lookup_color.lower().strip()
         csvrows = self.get_csv_rows(URL)
         mapping = self.get_mapping(csvrows[0])
         matches = []
