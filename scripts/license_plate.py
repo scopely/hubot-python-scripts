@@ -54,7 +54,7 @@ class LicensePlate(HubotScript):
             return 'No exact matches, the following plates partially matched:\n{0}'.format('\n'.join(partials))
         return "I don't know who the car with plate {0} belongs to".format(lookup_plate)
 
-    @hear('drives (?:a|the) ([a-z]+ )?([a-z]+) (.+)')
+    @hear('who (?:owns|drives) (?:a|the) ([a-z]+ )?([a-z]+) ([^\?]+)')
     def lookup_car(self, message, matches):
         lookup_color, lookup_make, lookup_model = matches
         lookup_make, lookup_model = lookup_make.lower(), lookup_model.lower().strip()
@@ -70,8 +70,8 @@ class LicensePlate(HubotScript):
             plate = row[mapping[PLATE]].lower()
             name = row[mapping[NAME]].title()
             if make == lookup_make and model == lookup_model:
-                description = '{name} owns a {color} {make} {model} with plate {plate}'.format(
-                    color=color.title(), make=make.title(), model=model.title(), name=name.title(), plate=plate.upper())
+                description = '{name} owns a {color} {make} {model}'.format(
+                    color=color.title(), make=make.title(), model=model.title(), name=name.title())
                 if lookup_color:
                     if color == lookup_color:
                         matches += [description]
