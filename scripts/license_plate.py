@@ -56,34 +56,26 @@ class LicensePlate(HubotScript):
 
     @hear('who (?:owns|drives) (?:a|the) ([a-z]+ )?([a-z]+) ([^\?]+)')
     def lookup_car(self, message, matches):
-        lookup_color, lookup_make, lookup_model = matches
-        lookup_make, lookup_model = lookup_make.lower(), lookup_model.lower().strip()
-        if lookup_color:
-            lookup_color = lookup_color.lower().strip()
+        search = matches[0].lower()
         csvrows = self.get_csv_rows(URL)
         mapping = self.get_mapping(csvrows[0])
         matches = []
         for row in csvrows:
-            make = row[mapping[MAKE]].lower()
-            model = row[mapping[MODEL]].lower()
-            color = row[mapping[COLOR]].lower()
-            plate = row[mapping[PLATE]].lower()
+            make = row[mapping[MAKE]]
+            model = row[mapping[MODEL]]
+            color = row[mapping[COLOR]]
             name = row[mapping[NAME]].title()
-            if make == lookup_make and model == lookup_model:
+            search_description = '{color} {make} {model}'.format(
+                color=color, make=make, model=model).lower()
+            print search_description
+            if search in search_description:
                 description = '{name} owns a {color} {make} {model}'.format(
                     color=color.title(), make=make.title(), model=model.title(), name=name.title())
-                if lookup_color:
-                    if color == lookup_color:
-                        matches += [description]
-                else:
-                    matches += [description]
+                matches += [description]
         if matches:
             return '\n'.join(matches)
-        if lookup_color:
-            return "I don't know of anyone owning a {color} {make} {model}".format(
-                color=lookup_color.title(), make=lookup_make.title(), model=lookup_model.title())
-        return "I don't know of anyone owning a {make} {model}".format(
-            make=lookup_make.title(), model=lookup_model.title())
+        return "I don't know of anyone owning a {search}".format(
+            search=search.title())
 
     def get_csv_rows(self, url):
         r = requests.get(url)
