@@ -39,19 +39,47 @@ class LicensePlate(HubotScript):
         partials = []
         for row in csvrows:
             plate = row[mapping[PLATE]].replace(' ', '').replace('#', '').lower()
+            make = row[mapping[MAKE]]
+            model = row[mapping[MODEL]]
+            color = row[mapping[COLOR]]
+            name = row[mapping[NAME]].title()
             description = 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
                     plate=plate.upper(), color=color, make=make, model=model, name=name)
             if plate == lookup_plate:
-                make = row[mapping[MAKE]]
-                model = row[mapping[MODEL]]
-                color = row[mapping[COLOR]]
-                name = row[mapping[NAME]].title()
                 return description
             if lookup_plate in plate and len(lookup_plate) > 2:
                 partials += [description]
         if partials:
             return 'No exact matches, the following plates partially matched:\n{0}'.format('\n'.join(partials))
         return "I don't know who the car with plate {0} belongs to".format(lookup_plate)
+
+    @hear('drives (?:a|the) ([a-z]+ )?([a-z]+) ([a-z]+)')
+    def lookup_car(self, message, matches):
+        lookup_color, lookup_make, lookup_model = [x.lower() for x in matches]
+        csvrows = self.get_csv_rows(URL)
+        mapping=self.get_mapping(csvrows[0])
+        matches = []
+        for row in csvrows:
+            make = row[mapping[MAKE]].lower()
+            model = row[mapping[MODEL]].lower()
+            color = row[mapping[COLOR]].lower()
+            name = row[mapping[NAME]].title()
+            if make == lookup_make and model == lookup_model:
+                description = '{name} owns a {color} {make} {model}'.format(
+                    color=color, make=make, model=model, name=name)
+                if lookup_color:
+                    if color == lookup_color:
+                        matches += [description]
+                else:
+                    matches += [description]
+        if matches:
+            return '\n'.join(matches)
+        if lookup_color:
+            return "I don't know of anyone owning a {color} {make} {model}".format(
+                    color=color, make=make, model=model)
+        return "I don't know of anyone owning a {make} {model}".format(
+                    make=make, model=model)
+
 
     def get_csv_rows(self, url):
         r = requests.get(url)
