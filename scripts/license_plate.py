@@ -35,16 +35,17 @@ class LicensePlate(HubotScript):
     def lookup_plate(self, message, matches):
         lookup_plate = matches[0].replace(' ', '').lower()
         csvrows = self.get_csv_rows(URL)
-        mapping=self.get_mapping(csvrows[0])
+        mapping = self.get_mapping(csvrows[0])
         partials = []
         for row in csvrows:
-            plate = row[mapping[PLATE]].replace(' ', '').replace('#', '').lower()
+            plate = row[mapping[PLATE]].replace(
+                ' ', '').replace('#', '').lower()
             make = row[mapping[MAKE]]
             model = row[mapping[MODEL]]
             color = row[mapping[COLOR]]
             name = row[mapping[NAME]].title()
             description = 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
-                    plate=plate.upper(), color=color, make=make, model=model, name=name)
+                plate=plate.upper(), color=color, make=make, model=model, name=name)
             if plate == lookup_plate:
                 return description
             if lookup_plate in plate and len(lookup_plate) > 2:
@@ -55,18 +56,22 @@ class LicensePlate(HubotScript):
 
     @hear('drives (?:a|the) ([a-z]+ )?([a-z]+) ([a-z]+)')
     def lookup_car(self, message, matches):
-        lookup_color, lookup_make, lookup_model = [x.lower() for x in matches]
+        lookup_color, lookup_make, lookup_model = matches
+        lookup_make, lookup_model = lookup_make.lower(), lookup_model.lower()
+        if lookup_color:
+            lookup_color = lookup_color.lower()
         csvrows = self.get_csv_rows(URL)
-        mapping=self.get_mapping(csvrows[0])
+        mapping = self.get_mapping(csvrows[0])
         matches = []
         for row in csvrows:
             make = row[mapping[MAKE]].lower()
             model = row[mapping[MODEL]].lower()
             color = row[mapping[COLOR]].lower()
+            plate = row[mapping[PLATE]].lower()
             name = row[mapping[NAME]].title()
             if make == lookup_make and model == lookup_model:
-                description = '{name} owns a {color} {make} {model}'.format(
-                    color=color, make=make, model=model, name=name)
+                description = '{name} owns a {color} {make} {model} with plate {plate}'.format(
+                    color=color.title(), make=make.title(), model=model.title(), name=name.title(), plate=plate.upper())
                 if lookup_color:
                     if color == lookup_color:
                         matches += [description]
@@ -76,10 +81,9 @@ class LicensePlate(HubotScript):
             return '\n'.join(matches)
         if lookup_color:
             return "I don't know of anyone owning a {color} {make} {model}".format(
-                    color=color, make=make, model=model)
+                color=lookup_color.title(), make=lookup_make.title(), model=lookup_model.title())
         return "I don't know of anyone owning a {make} {model}".format(
-                    make=make, model=model)
-
+            make=lookup_make.title(), model=lookup_model.title())
 
     def get_csv_rows(self, url):
         r = requests.get(url)
