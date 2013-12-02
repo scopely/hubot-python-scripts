@@ -66,7 +66,7 @@ class LicensePlate(HubotScript):
                 model = row[mapping[MODEL]]
                 color = row[mapping[COLOR]]
                 name = row[mapping[NAME]].title()
-                search_description = '{color} {make} {model}'.format(
+                search_description = '{color} {make} {model} {color} {model}'.format(
                     color=color, make=make, model=model).lower()
                 if search in search_description:
                     description = '{name} owns a {color} {make} {model}'.format(
