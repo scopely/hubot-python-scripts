@@ -34,8 +34,11 @@ class JIRALookup(HubotScript):
             issue = jira.issue(issue_id)
             url = '{base}/browse/{id}'.format(base=HOST, id=issue_id)
             desc = ''
+            env = ''
             if issue.fields.description:
                 desc = issue.fields.description
-            return '{id}: {status} ({tags})\n{title}: {url}\n{desc}'.format(id=issue_id.upper(), status=issue.fields.status.name, title=issue.fields.summary, desc=desc,url=url, tags=', '.join(issue.fields.labels))
+            if issue.fields.environment:
+                env = '\n{0}'.format(issue.fields.environment)
+            return '{id}: {status}, assigned to {assignee} ({tags})\n{title}: {url}\n{desc}{env}'.format(id=issue_id.upper(), status=issue.fields.status.name, title=issue.fields.summary, desc=desc,url=url, tags=', '.join(issue.fields.labels), assignee=issue.fields.assignee.displayName, env=env)
         except Exception as e:
             pass
