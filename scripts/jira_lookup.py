@@ -41,9 +41,9 @@ class JIRALookup(HubotScript):
                 desc = issue.fields.description
             if issue.fields.environment:
                 env = '\n{0}'.format(issue.fields.environment)
-            if hasattr(issue, 'assignee'):
+            if issue.fields.assignee:
                 assignee = 'assigned to {assignee}'.format(
-                    assignee=issue.assignee.displayName)
+                    assignee=issue.fields.assignee.displayName)
             return '{id}: {status}, {assignee} ({tags})\n{title}: {url}\n{desc}{env}'.format(id=issue_id.upper(), status=issue.fields.status.name, title=issue.fields.summary, desc=desc, url=url, tags=', '.join(issue.fields.labels), assignee=assignee, env=env)
         except Exception as e:
             pass
