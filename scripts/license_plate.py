@@ -57,25 +57,24 @@ class LicensePlate(HubotScript):
     @hear('who (?:owns|drives) (?:a|the) ([^\?]+)')
     def lookup_car(self, message, matches):
         search = matches[0].lower()
-        if len(search) > 3:
-            csvrows = self.get_csv_rows(URL)
-            mapping = self.get_mapping(csvrows[0])
-            matches = []
-            for row in csvrows:
-                make = row[mapping[MAKE]]
-                model = row[mapping[MODEL]]
-                color = row[mapping[COLOR]]
-                name = row[mapping[NAME]].title()
-                search_description = '{color} {make} {model} {color} {model}'.format(
-                    color=color, make=make, model=model).lower()
-                if search in search_description:
-                    description = '{name} owns a {color} {make} {model}'.format(
-                        color=color.title(), make=make.title(), model=model.title(), name=name.title())
-                    matches += [description]
-            if matches:
-                return '\n'.join(matches)
-            return "I don't know of anyone owning a {search}".format(
-                search=search.title())
+        csvrows = self.get_csv_rows(URL)
+        mapping = self.get_mapping(csvrows[0])
+        matches = []
+        for row in csvrows:
+            make = row[mapping[MAKE]]
+            model = row[mapping[MODEL]]
+            color = row[mapping[COLOR]]
+            name = row[mapping[NAME]].title()
+            search_description = '{color} {make} {model} {color} {model}'.format(
+                color=color, make=make, model=model).lower()
+            if search in search_description:
+                description = '{name} owns a {color} {make} {model}'.format(
+                    color=color.title(), make=make.title(), model=model.title(), name=name.title())
+                matches += [description]
+        if matches:
+            return '\n'.join(matches)
+        return "I don't know of anyone owning a {search}".format(
+            search=search.title())
 
     def get_csv_rows(self, url):
         r = requests.get(url)
