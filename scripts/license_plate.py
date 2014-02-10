@@ -27,7 +27,7 @@ MODEL = 'What is the model of your vehicle?'
 COLOR = 'What color is your vehicle?'
 PLATE = 'What is your license plate #?'
 NAME = environ.get('HUBOT_LICENSE_PLATE_NAMEFIELD', '')
-
+SURVEY_URL = environ.get('HUBOT_LICENSE_PLATE_SURVEY_URL', '')
 
 class LicensePlate(HubotScript):
 
@@ -75,6 +75,11 @@ class LicensePlate(HubotScript):
             return '\n'.join(matches)
         return "I don't know of anyone owning a {search}".format(
             search=search.title())
+            
+    @respond('new car')
+    def link_survey_url(self, message, matches):
+        if SURVEY_URL:
+            return SURVEY_URL
 
     def get_csv_rows(self, url):
         r = requests.get(url)
