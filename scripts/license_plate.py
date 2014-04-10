@@ -26,7 +26,7 @@ MAKE = 'What is the make of your vehicle?'
 MODEL = 'What is the model of your vehicle?'
 COLOR = 'What color is your vehicle?'
 PLATE = 'What is your license plate #?'
-NAME = environ.get('HUBOT_LICENSE_PLATE_NAMEFIELD', '')
+NAME = 'What is your name?'
 SURVEY_URL = environ.get('HUBOT_LICENSE_PLATE_SURVEY_URL', '')
 
 class LicensePlate(HubotScript):
