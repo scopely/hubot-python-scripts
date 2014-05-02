@@ -48,14 +48,6 @@ class LastFM(HubotScript):
             return last_x
         except Exception as e:
             pass
-            
-    @hear('(currently playing|playing( right)? now|now playing|song\?)')
-    def current(self, message, matches):
-        current_track = None
-        for track in self.recent_tracks():
-            if track.playing:
-                return '%s' % track
-        return '%s' % self.recent_tracks()[0]
         
 class Track:
     def __init__(self, props):
