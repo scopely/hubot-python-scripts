@@ -31,7 +31,7 @@ SURVEY_URL = environ.get('HUBOT_LICENSE_PLATE_SURVEY_URL', '')
 
 class LicensePlate(HubotScript):
 
-    @hear('plate #? ?([a-z0-9]+)')
+    @hear('\bplate #? ?([a-z0-9]+)')
     def lookup_plate(self, message, matches):
         lookup_plate = matches[0].replace(' ', '').lower()
         csvrows = self.get_csv_rows(URL)
