@@ -43,7 +43,7 @@ class LicensePlate(HubotScript):
             make = row[mapping[MAKE]]
             model = row[mapping[MODEL]]
             color = row[mapping[COLOR]]
-            name = row[mapping[NAME]].title()
+            name = row[mapping[NAME]]
             description = 'Plate {plate} is a {color} {make} {model} owned by {name}'.format(
                 plate=plate.upper(), color=color, make=make, model=model, name=name)
             if plate == lookup_plate:
@@ -64,7 +64,7 @@ class LicensePlate(HubotScript):
             make = row[mapping[MAKE]]
             model = row[mapping[MODEL]]
             color = row[mapping[COLOR]]
-            name = row[mapping[NAME]].title()
+            name = row[mapping[NAME]]
             search_description = '{color} {make} {model} {color} {model}'.format(
                 color=color, make=make, model=model).lower()
             if search in search_description:
