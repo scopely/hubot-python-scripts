@@ -69,7 +69,7 @@ class LicensePlate(HubotScript):
                 color=color, make=make, model=model).lower()
             if search in search_description:
                 description = '{name} owns a {color} {make} {model}'.format(
-                    color=color.title(), make=make.title(), model=model.title(), name=name.title())
+                    color=color.title(), make=make.title(), model=model.title(), name=name)
                 matches += [description]
         if matches:
             return '\n'.join(matches)
